@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screenBackground"
+    tools:context=".SignupActivity">
+
+    <ImageView
+        android:id="@+id/gradientBgSignup"
+        android:layout_width="902dp"
+        android:layout_height="414dp"
+        android:layout_weight="1"
+        android:background="@drawable/background_gradient"
+        android:contentDescription="Background Gradient"
+        android:forceDarkAllowed="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.51"
+        tools:ignore="HardcodedText"
+        tools:targetApi="Q" />
+
+    <EditText
+        android:id="@+id/emailAddressSignUpField"
+        android:layout_width="325dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="192dp"
+        android:drawableEnd="@drawable/ic_email"
+        android:drawablePadding="20dp"
+        android:ems="10"
+        android:hint="@string/enterEmailAddressText"
+        android:importantForAutofill="no"
+        android:inputType="textEmailAddress"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpAccountTextLabel" />
+
+    <TextView
+        android:id="@+id/emailLabelSignUp"
+        android:layout_width="49dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="112dp"
+        android:layout_marginEnd="20dp"
+        android:maxLines="1"
+        android:text="@string/email"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/emailAddressSignUpField"
+        app:layout_constraintHorizontal_bias="0.992"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/passwordFieldSignUp"
+        android:layout_width="325dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/enterPasswordText"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/showHideSignupButton"
+        app:layout_constraintTop_toBottomOf="@+id/emailAddressSignUpField" />
+
+    <EditText
+        android:id="@+id/passwordFieldConfirmSignUp"
+        android:layout_width="325dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/confirmPasswordText"
+        android:importantForAutofill="no"
+        android:inputType="textPassword"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/showHideSignupButton"
+        app:layout_constraintTop_toBottomOf="@+id/passwordFieldSignUp" />
+
+    <TextView
+        android:id="@+id/passwordLabelSignUp"
+        android:layout_width="64dp"
+        android:layout_height="21dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/passwordText"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/passwordFieldSignUp"
+        app:layout_constraintHorizontal_bias="0.983"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailLabelSignUp" />
+
+    <TextView
+        android:id="@+id/passwordLabelSignUp3"
+        android:layout_width="120dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/confirmPasswordText"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@+id/passwordFieldConfirmSignUp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordLabelSignUp" />
+
+    <TextView
+        android:id="@+id/signUpAccountTextLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:maxLines="1"
+        android:text="@string/sign_up_text_camelCase"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/gradientBgSignup" />
+
+    <Button
+        android:id="@+id/showHideSignupButton"
+        android:layout_width="85dp"
+        android:layout_height="61dp"
+        android:layout_marginEnd="96dp"
+        android:text="@string/show"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.457" />
+
+    <Button
+        android:id="@+id/signUpAccountButtonTrigger"
+        android:layout_width="423dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/signUpText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/passwordFieldConfirmSignUp" />
+
+    <Button
+        android:id="@+id/loginActivityButton"
+        android:layout_width="254dp"
+        android:layout_height="36dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:text="@string/loginAccountText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signUpAccountButtonTrigger"
+        app:layout_constraintVertical_bias="0.217" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
