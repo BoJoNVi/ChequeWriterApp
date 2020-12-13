@@ -118,5 +118,9 @@ If you have any questions about this Privacy Policy, You can contact us:
     <string name="copyrightNAME">© 2020 (MCM-KHIANJUAN)</string>
     <string name="emailExample">example_email@address.com</string>
     <string name="title_activity_privacypolicy">ScrollingActivity</string>
+    <string name="app_settings">App Settings</string>
+    <string name="payee">Payee</string>
+    <string name="bank">Bank</string>
+    <string name="cheque">Cheque</string>
 
 </resources>

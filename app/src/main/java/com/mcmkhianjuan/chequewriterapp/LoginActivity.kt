@@ -1,5 +1,6 @@
 package com.mcmkhianjuan.chequewriterapp
 
+
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.DialogInterface
@@ -10,6 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -17,6 +19,8 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 
 
 class LoginActivity : AppCompatActivity() {
@@ -51,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    fun signInAccount() {
+    private fun signInAccount() {
         val emailFieldInputSignIn: EditText = findViewById(R.id.emailField)
         val passwordFieldInputSignIn: EditText = findViewById(R.id.passwordField)
         val emailInput = emailFieldInputSignIn.text.toString()
@@ -61,10 +65,19 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val accessDashboard = Intent(this, DashboardActivity::class.java)
                     startActivity(accessDashboard)
+                } else if (!task.isSuccessful) {
+                    try {
+                        throw task.exception!!
+                    } catch (e: FirebaseAuthInvalidCredentialsException) {
+                        Toast.makeText(this, "Invalid Account", Toast.LENGTH_SHORT).show()
+                        emailFieldInputSignIn.requestFocus()
+                    } catch (e: Exception) {
+                        Log.e(this.toString(), e.message.toString())
+                    }
                 } else {
                     Toast.makeText(
                         this,
-                        "Authentication Error.\n" + task.exception,
+                        "Authentication Error. Please try again.\n" + task.exception,
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -117,8 +130,10 @@ class LoginActivity : AppCompatActivity() {
                 val dialogBuilder = AlertDialog.Builder(this)
                 Intent(this, MainActivity::class.java)
                 // set message of alert dialog
-                dialogBuilder.setMessage("Make sure that WI-FI or Mobile Data is turned on, then try again.\n" +
-                        "You cannot Log In Account without Internet Connection.")
+                dialogBuilder.setMessage(
+                    "Make sure that WI-FI or Mobile Data is turned on, then try again.\n" +
+                            "You cannot Log In Account without Internet Connection."
+                )
                     // if the dialog is cancelable
                     .setCancelable(false)
                     // positive button text and action

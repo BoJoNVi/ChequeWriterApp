@@ -8,10 +8,18 @@ import android.content.pm.ActivityInfo
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextClock
+import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class DashboardActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -68,6 +76,7 @@ class DashboardActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         checkConnectivity()
         auth = FirebaseAuth.getInstance()
+        
         val logOutInDashBoard: Button = findViewById(R.id.logOutDashboardButton)
 
         logOutInDashBoard.setOnClickListener {
@@ -78,5 +87,12 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(goLoginPageIntent)
             finish()
         }
+
+        val calendar: Calendar = Calendar.getInstance()
+        val currentDate: String = DateFormat.getDateInstance(DateFormat.FULL).format(calendar.time)
+        val textViewDate = findViewById<TextView>(R.id.DateTextView)
+        textViewDate.text = currentDate
+
+
     }
 }

@@ -20,6 +20,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import java.lang.Exception
 
 class SignupActivity : AppCompatActivity() {
 
@@ -117,8 +121,10 @@ class SignupActivity : AppCompatActivity() {
                 val dialogBuilder = AlertDialog.Builder(this)
                 Intent(this, MainActivity::class.java)
                 // set message of alert dialog
-                dialogBuilder.setMessage("Make sure that WI-FI or Mobile Data is turned on, then try again.\n" +
-                        "You cannot Sign Up Account without Internet Connection.")
+                dialogBuilder.setMessage(
+                    "Make sure that WI-FI or Mobile Data is turned on, then try again.\n" +
+                            "You cannot Sign Up Account without Internet Connection."
+                )
                     // if the dialog is cancelable
                     .setCancelable(false)
                     // positive button text and action
@@ -155,6 +161,22 @@ class SignupActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Account created successfully", Toast.LENGTH_SHORT).show()
+                } else if (!task.isSuccessful) {
+                    try {
+                        throw task.exception!!
+                    } catch (e: FirebaseAuthUserCollisionException) {
+                        Toast.makeText(
+                            this,
+                            "The account [ $emailInput ] have already existed.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        emailText.requestFocus()
+                    } catch (e: FirebaseAuthWeakPasswordException) {
+                        Toast.makeText(this, "Weak Password. Input at-least 6 characters.", Toast.LENGTH_SHORT).show()
+                        passwordFieldSignUpText.requestFocus()
+                    } catch (e: Exception) {
+                        Log.e(this.toString(), e.message.toString())
+                    }
                 } else {
                     Toast.makeText(
                         this,
