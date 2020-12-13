@@ -16,8 +16,9 @@ Link: https://malayancollegesmindanaoo365-my.sharepoint.com/:v:/g/personal/kojua
 ```bash
 December 13, 2020 - 03:20 PM
 > Started working on Dashboard Activity
-- 05:47 PM
+- 06:30 PM
 > Added Handling Toast Task exceptions when User does something wrong in Login and Signup Activity
+> Fixed layout to ALL Activity (Login, Signup, Dashboard) to wrap_content and match_parent
 ```
 ```bash
 December 12, 2020 - 02:30 PM
