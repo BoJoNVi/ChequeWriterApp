@@ -14,4 +14,5 @@
     <color name="lawngreen">#7CFC00</color>
     <color name="limegreen">#32CD32</color>
     <color name="screenBackground">#E0ECFF</color>
+    <color name="declineRed">#CE435C</color>
 </resources>

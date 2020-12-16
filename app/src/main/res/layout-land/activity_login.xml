@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/gradientBgLogin"
-        android:layout_width="846dp"
-        android:layout_height="423dp"
+        android:layout_width="852dp"
+        android:layout_height="420dp"
         android:layout_weight="1"
         android:background="@drawable/background_gradient"
         android:contentDescription="Gradient Background"

@@ -20,14 +20,19 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.lang.Exception
 
 class SignupActivity : AppCompatActivity() {
 
+    val firebaseStoreDatabaseInit = Firebase.firestore
     private lateinit var auth: FirebaseAuth
+
 
     // check internet connection to let server know that account will be registered
     private fun isInternetAvailable(context: Context): Boolean {
@@ -58,7 +63,6 @@ class SignupActivity : AppCompatActivity() {
         }
         return result
     }
-
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,10 +95,14 @@ class SignupActivity : AppCompatActivity() {
         }
 
         signUpAccountButtonTapped.setOnClickListener {
+
             val emailText: EditText = findViewById(R.id.emailAddressSignUpField)
             val emailInput = emailText.text.toString()
             val passwordInput = passwordFieldSignUpText.text.toString()
             val confirmPasswordInput = passwordFieldConfirmSignUpText.text.toString()
+            val fullNameText: EditText = findViewById(R.id.fullNameTextField)
+            val fullNameInput = fullNameText.text.toString()
+
 
             if (isInternetAvailable(this)) {
                 if (passwordInput != confirmPasswordInput) {
@@ -102,12 +110,14 @@ class SignupActivity : AppCompatActivity() {
                     passwordFieldConfirmSignUpText.error =
                         "Confirm Password do not match in your Password"
                 } else if (emailInput.trim().isEmpty() || passwordInput.trim()
-                        .isEmpty() || confirmPasswordInput.trim().isEmpty()
+                        .isEmpty() || confirmPasswordInput.trim().isEmpty() || fullNameInput.trim()
+                        .isEmpty()
                 ) {
-                    Toast.makeText(this, "Please input all required fields", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "Please input all fields", Toast.LENGTH_SHORT)
                         .show()
                 } else if (emailInput.trim().isNotEmpty() || passwordInput.trim()
-                        .isNotEmpty() || confirmPasswordInput.trim().isNotEmpty()
+                        .isNotEmpty() || confirmPasswordInput.trim()
+                        .isNotEmpty() || fullNameInput.trim().isNotEmpty()
                 ) {
                     registerUser()
                 } else if (!isValidEmail(emailInput)) {
@@ -152,15 +162,22 @@ class SignupActivity : AppCompatActivity() {
     }
 
     private fun registerUser() {
+
+        // Find ID in the xml file
         val emailText: EditText = findViewById(R.id.emailAddressSignUpField)
-        val emailInput = emailText.text.toString()
         val passwordFieldSignUpText: EditText = findViewById(R.id.passwordFieldSignUp)
+        val fullNameText: EditText = findViewById(R.id.fullNameTextField)
+        // Convert to String
+        val emailInput = emailText.text.toString()
         val passwordInput = passwordFieldSignUpText.text.toString()
+        val fullNameInput = fullNameText.text.toString()
+
+//        val fullNameTextInputToString = fullNameTextInput.text.toString()
 
         auth.createUserWithEmailAndPassword(emailInput.trim(), passwordInput.trim())
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(this, "Account created successfully", Toast.LENGTH_SHORT).show()
+                    saveFirestoreDatabase(emailInput, fullNameInput)
                 } else if (!task.isSuccessful) {
                     try {
                         throw task.exception!!
@@ -172,7 +189,11 @@ class SignupActivity : AppCompatActivity() {
                         ).show()
                         emailText.requestFocus()
                     } catch (e: FirebaseAuthWeakPasswordException) {
-                        Toast.makeText(this, "Weak Password. Input at-least 6 characters.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            "Weak Password. Input at-least 6 characters.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                         passwordFieldSignUpText.requestFocus()
                     } catch (e: Exception) {
                         Log.e(this.toString(), e.message.toString())
@@ -186,6 +207,37 @@ class SignupActivity : AppCompatActivity() {
                 }
             }
     }
+
+    fun saveFirestoreDatabase(
+        emailInput: String,
+        fullNameInput: String,
+    ) {
+        // FireStore | Store Data in FireStore Database
+        // Access a Cloud Firestore instance from your Activity
+
+//        refUsers = FirebaseDatabase.getInstance().reference.child("users").child(firebaseUser!!.uid)
+        val firebaseStoreDatabaseGetInstance = FirebaseFirestore.getInstance()
+
+        val user: MutableMap<String, Any> = HashMap()
+        user["emailInput"] = emailInput
+        user["fullNameInput"] = fullNameInput
+        firebaseStoreDatabaseGetInstance.collection("users").add(user).addOnSuccessListener {
+            Toast.makeText(
+                this@SignupActivity,
+                "The account is created successfully",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            finish()
+        }.addOnFailureListener {
+            Toast.makeText(
+                this@SignupActivity,
+                "Failed to Sign Up. Please try again.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
 
     override fun onStart() {
         super.onStart()
@@ -204,6 +256,7 @@ class SignupActivity : AppCompatActivity() {
         return !TextUtils.isEmpty(emailInput) && Patterns.EMAIL_ADDRESS.matcher(emailInput)
             .matches()
     }
+
 
 }
 

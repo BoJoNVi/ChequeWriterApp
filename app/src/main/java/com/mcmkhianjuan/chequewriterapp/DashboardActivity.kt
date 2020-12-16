@@ -1,6 +1,5 @@
 package com.mcmkhianjuan.chequewriterapp
 
-
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -8,23 +7,26 @@ import android.content.pm.ActivityInfo
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextClock
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.NonNull
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.mcmkhianjuan.chequewriterapp.ModelClasses.Users
 import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class DashboardActivity : AppCompatActivity() {
-    private lateinit var auth: FirebaseAuth
     private var backPressedTime: Long = 0
     private var backToast: Toast? = null
+    private val TAG = "ProfileActivity"
+    private lateinit var auth: FirebaseAuth
+    private lateinit var firestoreFirestoreInstance: FirebaseFirestore
+    var refUsers: DatabaseReference? = null
+    var firebaseUser: FirebaseUser? = null
 
     override fun onBackPressed() {
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
@@ -76,9 +78,12 @@ class DashboardActivity : AppCompatActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         checkConnectivity()
         auth = FirebaseAuth.getInstance()
-        
-        val logOutInDashBoard: Button = findViewById(R.id.logOutDashboardButton)
+        firestoreFirestoreInstance = FirebaseFirestore.getInstance()
+        firebaseUser = FirebaseAuth.getInstance().currentUser
+        refUsers = FirebaseDatabase.getInstance().reference.child("users").child(firebaseUser!!.uid)
+        welcomeUserInDashboard()
 
+        val logOutInDashBoard: Button = findViewById(R.id.logOutDashboardButton)
         logOutInDashBoard.setOnClickListener {
             checkConnectivity()
             FirebaseAuth.getInstance().signOut()
@@ -93,6 +98,32 @@ class DashboardActivity : AppCompatActivity() {
         val textViewDate = findViewById<TextView>(R.id.DateTextView)
         textViewDate.text = currentDate
 
+        val settingsButtonTapped: Button = findViewById(R.id.settingsButton)
+        settingsButtonTapped.setOnClickListener {
+            val settingsAppIntent = Intent(this, AppSettings::class.java)
+            startActivity(settingsAppIntent)
+        }
+    }
+
+    private fun welcomeUserInDashboard() {
+        val welcomeBackUserNameText: TextView =
+            findViewById(R.id.welcomeBackNameText)
+        refUsers!!.addValueEventListener(object :
+            ValueEventListener {
+            override fun onDataChange(p0: DataSnapshot) {
+                if (p0.exists()) {
+                    val user: Users? = p0.getValue(Users::class.java)
+                    welcomeBackUserNameText.text = user!!.getfullNameInput()
+
+                }
+            }
+
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+        })
 
     }
 }
+
+

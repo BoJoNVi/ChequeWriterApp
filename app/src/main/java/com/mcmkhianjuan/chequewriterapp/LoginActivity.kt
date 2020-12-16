@@ -20,8 +20,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-
 
 class LoginActivity : AppCompatActivity() {
     private var backPressedTime: Long = 0
@@ -96,7 +94,7 @@ class LoginActivity : AppCompatActivity() {
         val loginButtonTapped: Button = findViewById(R.id.loginButton)
         val showHideButtonTapped: Button = findViewById(R.id.showHideButtonLogin)
         val signUpButtonTapped: Button = findViewById(R.id.signUpActivityButton)
-        val privacyPolicyButtonTapped: Button = findViewById(R.id.privacyPolicyButton)
+//        val privacyPolicyButtonTapped: Button = findViewById(R.id.privacyPolicyButton)
 
         showHideButtonTapped.setOnClickListener {
             if (showHideButtonTapped.text.toString() == "SHOW") {
@@ -109,10 +107,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         loginButtonTapped.setOnClickListener {
-//            checkConnectivity()
             val emailInputString = emailField.text.toString()
             val passwordInputString = passwordField.text.toString()
-
 
             if (isInternetAvailable(this)) {
                 if (emailInputString.trim().isEmpty()) {
@@ -158,7 +154,6 @@ class LoginActivity : AppCompatActivity() {
             val signUpIntent = Intent(this, SignupActivity::class.java)
             startActivity(signUpIntent)
         }
-
 
 //        val closeAppTapped: Button = findViewById(R.id.exitAppButton)
 //        closeAppTapped.setOnClickListener {
