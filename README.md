@@ -12,7 +12,11 @@ Link: https://malayancollegesmindanaoo365-my.sharepoint.com/:v:/g/personal/kojua
 [to be uploaded soon]
 
 ## Project Updates
-
+```bash
+December 16, 2020 - 12:29 PM
+> Rearranged layout to all activity windows
+> Added database for registered accounts
+```
 ```bash
 December 13, 2020 - 03:20 PM
 > Started working on Dashboard Activity
